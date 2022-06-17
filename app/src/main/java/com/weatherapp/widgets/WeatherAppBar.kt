@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +27,8 @@ import androidx.navigation.NavController
 import com.weatherapp.model.Favorite
 import com.weatherapp.navigation.WeatherScreens
 import com.weatherapp.screens.favorites.FavoriteViewModel
+import com.weatherapp.ui.theme.Orange
+import com.weatherapp.ui.theme.Purple700
 
 @Composable
 fun WeatherAppBar(
@@ -51,10 +54,18 @@ fun WeatherAppBar(
     }
 
     TopAppBar(
+        modifier = Modifier.background(
+            Brush.horizontalGradient(
+                colors = listOf(
+                    Purple700,
+                    Purple700
+                )
+            )
+        ),
         title = {
             Text(
                 text = title,
-                color = MaterialTheme.colors.onSecondary,
+                color = Color.White,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp
@@ -68,7 +79,8 @@ fun WeatherAppBar(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "search icon"
+                        contentDescription = "search icon",
+                        tint = Color.White
                     )
 
                 }
@@ -77,7 +89,8 @@ fun WeatherAppBar(
                 }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "More Icon"
+                        contentDescription = "More Icon",
+                        tint = Color.White
                     )
 
                 }
@@ -87,7 +100,7 @@ fun WeatherAppBar(
         navigationIcon = {
             if (icon != null) {
                 Icon(imageVector = icon, contentDescription = null,
-                    tint = MaterialTheme.colors.onSecondary,
+                    tint = Color.White,
                     modifier = Modifier.clickable {
                         onButtonClicked.invoke()
                     })
@@ -106,16 +119,18 @@ fun WeatherAppBar(
                             .scale(0.9f)
                             .clickable {
                                 val dataList = title.split(",")
-                                favoriteViewModel.insertFavorite(
-                                    Favorite(
-                                        city = dataList[0], // city name
-                                        country = dataList[1] // country code
+                                favoriteViewModel
+                                    .insertFavorite(
+                                        Favorite(
+                                            city = dataList[0], // city name
+                                            country = dataList[1] // country code
+                                        )
                                     )
-                                ).run {
-                                    showIt.value = true
-                                }
+                                    .run {
+                                        showIt.value = true
+                                    }
                             },
-                        tint = Color.Red.copy(alpha = 0.6f)
+                        tint = Color.White
                     )
                 } else {
                     showIt.value = false
@@ -157,7 +172,7 @@ fun ShowSettingDropDownMenu(
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .width(140.dp)
-                .background(Color.White)
+                .background(Purple700)
         ) {
             items.forEachIndexed { index, text ->
                 DropdownMenuItem(onClick = {
@@ -171,9 +186,11 @@ fun ShowSettingDropDownMenu(
                             else -> Icons.Default.Settings
 
                         }, contentDescription = null,
-                        tint = Color.LightGray
+                        tint = Color.White
                     )
-                    Text(text = text,
+                    Text(
+                        text = text,
+                        color = Color.White,
                         modifier = Modifier.clickable {
                             navController.navigate(
                                 when (text) {
@@ -182,8 +199,9 @@ fun ShowSettingDropDownMenu(
                                     else -> WeatherScreens.SettingsScreen.name
                                 }
                             )
-                        }, fontWeight = FontWeight.W300
+                        }, fontWeight = FontWeight.Bold
                     )
+
                 }
             }
         }

@@ -6,10 +6,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -24,15 +21,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.weatherapp.R
+import com.weatherapp.model.WeatherUnit
 import com.weatherapp.navigation.WeatherScreens
+import com.weatherapp.screens.settings.SettingsViewModel
+import com.weatherapp.ui.theme.Purple500
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
 
 @Composable
-fun WeatherSplashScreen(navController: NavController) {
+fun WeatherSplashScreen(
+    navController: NavController,
+    settingsViewModel: SettingsViewModel = hiltViewModel()
+) {
     val defaultCity = "Kolkata"
     val scale = remember {
         Animatable(0f)
@@ -47,18 +51,20 @@ fun WeatherSplashScreen(navController: NavController) {
                         .getInterpolation(it)
                 })
         )
+        settingsViewModel.insertWeatherUnit(WeatherUnit(unit = "Imperial (F)"))
         delay(2000L)
-        navController.navigate(WeatherScreens.MainScreen.name+"/${defaultCity}")
+        navController.navigate(WeatherScreens.MainScreen.name + "/${defaultCity}")
     })
+
     Surface(
         modifier = Modifier
             .padding(15.dp)
             .size(330.dp)
             .scale(scale.value),
         shape = CircleShape,
-        color = Color.White,
+        color = Color(0xFF673AB7),
         border = BorderStroke(
-            width = 2.dp, color = Color.LightGray
+            width = 2.dp, color = Color.White
         )
     ) {
         Column(
@@ -70,14 +76,14 @@ fun WeatherSplashScreen(navController: NavController) {
                 painter = painterResource(id = R.drawable.sun),
                 contentDescription = "sunny icon",
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.size(95.dp)
+                modifier = Modifier.size(95.dp),
             )
             Text(
                 text = "Find the Sun?",
                 style = MaterialTheme.typography.h5,
-                color = Color.LightGray
+                color = Color.White
             )
         }
-
     }
+
 }

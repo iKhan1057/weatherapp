@@ -113,7 +113,7 @@ fun MainContent(data: Weather, isImperial: Boolean) {
         Text(
             text = formatDate(weatherItem.dt), // Wed Nov 30
             style = MaterialTheme.typography.caption,
-            color = MaterialTheme.colors.onSecondary,
+            color = Color.White,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(6.dp)
         )
@@ -123,7 +123,7 @@ fun MainContent(data: Weather, isImperial: Boolean) {
                 .padding(4.dp)
                 .size(200.dp),
             shape = CircleShape,
-            color = Color(0xFFFFC400)
+            color = Color(0xFF673AB7)
         ) {
 
             Column(
